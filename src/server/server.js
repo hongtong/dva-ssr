@@ -8,10 +8,6 @@ import middleware from './middleware'
 // eslint-disable-next-line import/no-dynamic-require
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
-// Initialize `koa-router` and setup a route listening on `GET /*`
-// Logic has been splitted into two chained middleware functions
-// @see https://github.com/alexmingoia/koa-router#multiple-middleware
-
 const koaRouter = new Router()
 koaRouter.get(
   '/*',
@@ -35,26 +31,21 @@ koaRouter.get(
     const script = `${vendorScript}<script src="${assets.client.js}" defer ${crossorigin}></script>`
 
     ctx.status = ctx.state.status
-    ctx.body = `
-    <!doctype html>
-      <html lang="">
-      <head>
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-          <meta charset="utf-8" />
-          <title>Welcome to Razzle + Koa</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          ${
-  assets.client.css
-    ? `<link rel="stylesheet" href="${assets.client.css}">`
-    : ''
-}${script}
-          <script>window.__PRELOADED_STATE__ = ${JSON.stringify(ctx.state.preloadedState).replace(/</g, '\\\u003c')}</script>
-         
-      </head>
-      <body>
-          <div id="root">${ctx.state.markup}</div>
-      </body>
-    </html>`
+    ctx.body = `<!doctype html>
+  <html lang="zh-cn">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta charset="utf-8" />
+      <title>Welcome to Razzle + Koa</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+      <script>window.__PRELOADED_STATE__ = ${JSON.stringify(ctx.state.preloadedState).replace(/</g, '\\\u003c')}</script>
+      ${script}
+    </head>
+    <body>
+      <div id="root">${ctx.state.markup}</div>
+    </body>
+  </html>`
   },
 )
 

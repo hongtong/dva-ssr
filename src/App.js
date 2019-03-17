@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import dva from 'dva'
-import createBrowserHistory from 'history/createBrowserHistory'
-import createMemoryHistory from 'history/createMemoryHistory'
+import { createBrowserHistory, createMemoryHistory } from 'history'
 import createLoading from 'dva-loading'
 import './App.css'
 

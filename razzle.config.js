@@ -2,7 +2,16 @@ module.exports = {
   // do something to config
   modify: (config, { target, dev }) => {
     if (dev || target !== 'web') {
-      return config
+      return {
+        ...config,
+        devServer: {
+          ...config.devServer,
+          // proxy: {
+          //   '/v0': 'https://hacker-news.firebaseio.com/',
+          //   secure: false,
+          // },
+        },
+      }
     }
     const newConfig = {
       ...config,
