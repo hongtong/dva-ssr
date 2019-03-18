@@ -1,7 +1,9 @@
 import React from 'react'
+import { connect } from 'dva'
 import logo from '../react.svg'
 import './Home.css'
 
+@connect()
 class Home extends React.Component {
   componentDidMount() {
   }

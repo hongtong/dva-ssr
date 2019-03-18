@@ -6,10 +6,6 @@ module.exports = {
         ...config,
         devServer: {
           ...config.devServer,
-          // proxy: {
-          //   '/v0': 'https://hacker-news.firebaseio.com/',
-          //   secure: false,
-          // },
         },
       }
     }

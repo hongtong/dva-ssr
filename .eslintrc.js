@@ -17,7 +17,8 @@ module.exports = {
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "transform-decorators-legacy"
   ],
   "rules": {
     "semi": [2, "never"],
