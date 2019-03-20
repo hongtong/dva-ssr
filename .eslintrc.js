@@ -4,6 +4,7 @@ module.exports = {
     "es6": true,
     "node": true
   },
+  "parser": "babel-eslint",
   "extends": "airbnb",
   "globals": {
     "Atomics": "readonly",
@@ -17,8 +18,7 @@ module.exports = {
     "sourceType": "module"
   },
   "plugins": [
-    "react",
-    "transform-decorators-legacy"
+    "react"
   ],
   "rules": {
     "semi": [2, "never"],

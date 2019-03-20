@@ -1,9 +1,13 @@
+/* eslint-disable indent */
 import Koa from 'koa'
 import serve from 'koa-static'
 import helmet from 'koa-helmet'
 import Router from 'koa-router'
+import { getBundles } from 'react-loadable/webpack'
 import * as R from 'ramda'
 import middleware from './middleware'
+// eslint-disable-next-line import/no-unresolved
+import stats from '../../build/react-loadable.json'
 
 // eslint-disable-next-line import/no-dynamic-require
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
@@ -25,12 +29,17 @@ koaRouter.get(
     }
   },
   (ctx) => {
+    ctx.status = ctx.state.status
+    const { modules } = ctx.state
+    const bundles = getBundles(stats, modules)
+    const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'))
+    const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
     const vendorJs = R.path(['vendor', 'js'], assets)
     const crossorigin = process.env.NODE_ENV === 'production' ? '' : 'crossorigin'
     const vendorScript = vendorJs ? `<script src="${vendorJs}" defer ${crossorigin}></script>` : ''
     const script = `${vendorScript}<script src="${assets.client.js}" defer ${crossorigin}></script>`
 
-    ctx.status = ctx.state.status
+
     ctx.body = `<!doctype html>
   <html lang="zh-cn">
     <head>
@@ -39,8 +48,15 @@ koaRouter.get(
       <title>Welcome to Razzle + Koa</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+      ${styles.map(style => `<link href="${style.file}" rel="stylesheet"/>`).join('\n')}
       <script>window.__PRELOADED_STATE__ = ${JSON.stringify(ctx.state.preloadedState).replace(/</g, '\\\u003c')}</script>
       ${script}
+      ${chunks.map(
+          chunk => (process.env.NODE_ENV === 'production'
+            ? `<script src="/${chunk.file}"></script>`
+            : `<script src="http://${process.env.HOST}:${parseInt(process.env.PORT, 10) + 1}/${chunk.file}"></script>`),
+        ).join('\n')
+      }
     </head>
     <body>
       <div id="root">${ctx.state.markup}</div>

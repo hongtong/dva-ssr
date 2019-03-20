@@ -1,4 +1,4 @@
 {
-  "presets": ["react"],
-  "plugins": ["transform-decorators-legacy"],
+  "presets": ["razzle/babel"],
+  "plugins": ["transform-decorators-legacy", "react-loadable/babel"],
 }
