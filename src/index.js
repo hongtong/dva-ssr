@@ -8,9 +8,10 @@ const app = require('./server').default
 // Use `app#callback()` method here instead of directly
 // passing `app` as an argument to `createServer` (or use `app#listen()` instead)
 // @see https://github.com/koajs/koa/blob/master/docs/api/index.md#appcallback
-Loadable.preloadAll().then(async () => {
-  const currentHandler = app.callback()
-  const server = http.createServer(currentHandler)
+let currentHandler = app.callback()
+const server = http.createServer(currentHandler)
+
+Loadable.preloadAll().then(() => {
   server.listen(process.env.PORT || 3000, (error) => {
     if (error) {
       console.log(error)

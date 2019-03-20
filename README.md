@@ -31,7 +31,7 @@ Runs the test watcher (Jest) in an interactive mode.
 
 ## TODO
 
-- 使用 Loadable 按需加载组件 done
+- server 压力过大时，降级为 csr
 - husky
 - 补充单元测试
 - sevice work
