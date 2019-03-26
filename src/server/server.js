@@ -16,21 +16,9 @@ const koaRouter = new Router()
 koaRouter.get(
   '/*',
   ...middleware,
-  (ctx, next) => {
-    if (ctx.state.context.url) {
-      ctx.status = ctx.state.context.status
-      ctx.redirect(ctx.state.context.url)
-    } else if (ctx.state.context.status) {
-      ctx.state.status = 404
-      next()
-    } else {
-      ctx.state.status = 200
-      next()
-    }
-  },
   (ctx) => {
     ctx.status = ctx.state.status
-    const { modules } = ctx.state
+    const { modules = [], preloadedState = {}, markup = '' } = ctx.state
     const bundles = getBundles(stats, modules)
     const chunks = bundles.filter(bundle => bundle.file.endsWith('.js'))
     const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
@@ -38,18 +26,21 @@ koaRouter.get(
     const crossorigin = process.env.NODE_ENV === 'production' ? '' : 'crossorigin'
     const vendorScript = vendorJs ? `<script src="${vendorJs}" defer ${crossorigin}></script>` : ''
     const script = `${vendorScript}<script src="${assets.client.js}" defer ${crossorigin}></script>`
-
+    // const desc = preloadedState.global.desc && `<meta name=”description” content=${preloadedState.global.desc}>`
+    // const keyword = preloadedState.global.keyword && `<meta name=”description” content=${preloadedState.global.keyword}>`
+// ${desc}${keyword}
 
     ctx.body = `<!doctype html>
   <html lang="zh-cn">
     <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta charset="utf-8" />
-      <title>Welcome to Razzle + Koa</title>
+      <title></title>
+
       <meta name="viewport" content="width=device-width, initial-scale=1">
       ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
       ${styles.map(style => `<link href="${style.file}" rel="stylesheet"/>`).join('\n')}
-      <script>window.__PRELOADED_STATE__ = ${JSON.stringify(ctx.state.preloadedState).replace(/</g, '\\\u003c')}</script>
+      <script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\\u003c')}</script>
       ${script}
       ${chunks.map(
           chunk => (process.env.NODE_ENV === 'production'
@@ -59,7 +50,7 @@ koaRouter.get(
       }
     </head>
     <body>
-      <div id="root">${ctx.state.markup}</div>
+      <div id="root">${markup}</div>
     </body>
   </html>`
   },

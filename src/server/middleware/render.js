@@ -22,9 +22,11 @@ export default (ctx, next) => {
     <Capture report={moduleName => modules.push(moduleName)}><App /></Capture>,
   )
   const preloadedState = app._store.getState()
-  ctx.state.markup = markup
-  ctx.state.context = context
-  ctx.state.preloadedState = preloadedState
-  ctx.state.modules = modules
+  ctx.state = {
+    markup,
+    context,
+    preloadedState,
+    modules,
+  }
   next()
 }

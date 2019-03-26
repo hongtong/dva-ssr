@@ -9,7 +9,7 @@ import models from './models'
 
 const createHistory = process.env.BUILD_TARGET === 'client' ? createBrowserHistory : createMemoryHistory
 
-const preloadedState = process.env.BUILD_TARGET === 'client' ? (window.__PRELOADED_STATE__ || {}) : {}
+const preloadedState = process.env.BUILD_TARGET === 'client' ? window.__PRELOADED_STATE__ : {}
 if (process.env.BUILD_TARGET === 'client') delete window.__PRELOADED_STATE__
 
 const app = dva({

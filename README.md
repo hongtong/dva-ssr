@@ -32,6 +32,7 @@ Runs the test watcher (Jest) in an interactive mode.
 ## TODO
 
 - server 压力过大时，降级为 csr
+- setTdk
 - husky
 - 补充单元测试
 - sevice work

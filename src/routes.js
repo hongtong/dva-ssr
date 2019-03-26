@@ -2,6 +2,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from './pages/Home'
+import TopList from './pages/TopList'
 
 function Status(props) {
   return (
@@ -36,6 +37,11 @@ export const routesList = [
   {
     path: '/home',
     component: Home,
+    exact: true,
+  },
+  {
+    path: '/t',
+    component: TopList,
     exact: true,
   },
   {
