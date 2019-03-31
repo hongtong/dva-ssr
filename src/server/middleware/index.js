@@ -1,3 +1,8 @@
+import apiErrorHandle from './apiErrorHandle'
 import render from './render'
+import status from './status'
 
-export default [render]
+const middleware = [status]
+const csr = false
+
+export default csr ? middleware : [apiErrorHandle, render, ...middleware]

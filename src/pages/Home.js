@@ -1,23 +1,28 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { connect } from 'dva'
-import Loadable from 'react-loadable'
 import logo from '../react.svg'
 import './Home.css'
 
-const Intro = Loadable({
-  loader: () => import('../components/AsyncCompents'),
-  loading: () => null,
+@connect(state => state.user, {
+  fetchUserRepos: username => ({ type: 'user/fetchUserRepos', payload: username }),
 })
-
-@connect() // import AsyncCompents from '../components/AsyncCompents'
 class Home extends React.Component {
-  componentDidMount() {
+  static async getInitData({ dispatch, match }) {
+    const { params: { username } } = match
+    return dispatch({ type: 'user/fetchUserRepos', payload: username })
   }
 
   render() {
+    const { repos } = this.props
     return (
       <div className="Home">
-        <Intro />
+        <ul>
+          {
+            repos.map(({ id }) => <li key={id}>{id}</li>)
+          }
+        </ul>
         <div className="Home-header">
           <img src={logo} className="Home-logo" alt="logo" />
           <h2>Welcome to Razzle</h2>

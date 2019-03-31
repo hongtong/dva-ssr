@@ -34,7 +34,7 @@ function NotFound() {
 
 export const routesList = [
   {
-    path: '/home',
+    path: '/home/:username',
     component: Home,
     exact: true,
   },

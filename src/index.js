@@ -14,7 +14,7 @@ const server = http.createServer(currentHandler)
 Loadable.preloadAll().then(() => {
   server.listen(process.env.PORT || 3000, (error) => {
     if (error) {
-      console.log(error)
+      // console.log(error)
     }
     console.log('🚀 started', process.env.PORT)
   })
