@@ -5,13 +5,13 @@ import { connect } from 'dva'
 import logo from '../react.svg'
 import './Home.css'
 
-@connect(state => state.user, {
-  fetchUserRepos: username => ({ type: 'user/fetchUserRepos', payload: username }),
+@connect(state => state.u2, {
+  fetchUserRepos: username => ({ type: 'u2/fetchUserRepos', payload: username }),
 })
 class Home extends React.Component {
   static getInitData({ dispatch, match }) {
     const { params: { username } } = match
-    return dispatch({ type: 'user/fetchUserRepos', payload: username })
+    return dispatch({ type: 'u2/fetchUserRepos', payload: username })
   }
 
   render() {
