@@ -11,15 +11,15 @@ module.exports = {
     ] : [...config.plugins]
 
 
-    if (dev || target !== 'web') {
-      return {
-        ...config,
-        devServer: {
-          ...config.devServer,
-        },
-        plugins,
-      }
-    }
+    // if (dev || target !== 'web') {
+    //   return {
+    //     ...config,
+    //     devServer: {
+    //       ...config.devServer,
+    //     },
+    //     plugins,
+    //   }
+    // }
     const newConfig = {
       ...config,
       optimization: {

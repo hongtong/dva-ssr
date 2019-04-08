@@ -2,6 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { connect } from 'dva'
+import { Link } from 'dva/router'
 import logo from '../react.svg'
 import './Home.css'
 
@@ -18,6 +19,7 @@ class Home extends React.Component {
     const { repos } = this.props
     return (
       <div className="Home">
+        <Link to="/e/hongtong">afd</Link>
         <ul>
           {
             repos.map(({ id }) => <li key={id}>{id}</li>)

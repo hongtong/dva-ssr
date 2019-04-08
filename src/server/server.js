@@ -12,6 +12,25 @@ import stats from '../../build/react-loadable.json'
 // eslint-disable-next-line import/no-dynamic-require
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
+function getPreloadChunkList(s) {
+  const allChunks = Object.keys(s)
+                      .filter(item => /^.\/pages\//.test(item))
+                      .reduce(
+                        (acc, cur) => [
+                          ...acc,
+                          ...s[cur]
+                              .map(i => i.publicPath)
+                              .filter(p => /\.chunk\.js$/.test(p)),
+                        ],
+                        [],
+                      )
+  const allChunksWithOutRepeat = Array.from(new Set(allChunks))
+  return allChunksWithOutRepeat
+}
+
+const preloadChunks = getPreloadChunkList(stats)
+const preloadChunksFragment = preloadChunks.map(item => `<link rel="prefetch" href="${item}" as="script">`)
+
 const koaRouter = new Router()
 koaRouter.get(
   '/*',
@@ -28,7 +47,6 @@ koaRouter.get(
     const script = `${vendorScript}<script src="${assets.client.js}" defer ${crossorigin}></script>`
     const desc = R.path(['global', 'desc'], preloadedState) && `<meta name=”description” content=${R.path(['global', 'desc'], preloadedState)}>`
     const keyword = R.path(['global', 'keyword'], preloadedState) && `<meta name=”description” content=${R.path(['global', 'keyword'], preloadedState)}>`
-
     ctx.body = `<!doctype html>
   <html lang="zh-cn">
     <head>
@@ -36,6 +54,7 @@ koaRouter.get(
       <meta charset="utf-8" />
       <title></title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      ${preloadChunksFragment}
       ${desc || ''}${keyword || ''}
       ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
       ${styles.map(style => `<link href="${style.file}" rel="stylesheet"/>`).join('\n')}

@@ -14,6 +14,10 @@ class Home extends React.Component {
     return dispatch({ type: 'u2/fetchUserRepos', payload: username })
   }
 
+  componentDidMount() {
+    this.props.fetchUserRepos('hongtong')
+  }
+
   render() {
     const { repos } = this.props
     return (
