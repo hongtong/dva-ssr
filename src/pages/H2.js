@@ -9,9 +9,14 @@ import './Home.css'
   fetchUserRepos: username => ({ type: 'u2/fetchUserRepos', payload: username }),
 })
 class Home extends React.Component {
-  static getInitData({ dispatch, match }) {
-    const { params: { username } } = match
-    return dispatch({ type: 'u2/fetchUserRepos', payload: username })
+  static async getInitData({ dispatch, match }) {
+    try {
+      const { params: { username } } = match
+      const [d] = await dispatch({ type: 'u2/fetchUserRepos', payload: username })
+      return dispatch({ type: 'global/setTDK', payload: { title: d.id, desc: '123' } })
+    } catch (e) {
+      return null
+    }
   }
 
   componentDidMount() {

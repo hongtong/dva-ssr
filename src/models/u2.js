@@ -41,6 +41,7 @@ function userModel(request) {
       * fetchUserRepos({ payload: username }, { put, call }) {
         const repos = yield call(fetchUserRepos, username)
         yield put({ type: 'saveRepos', payload: repos.data })
+        return repos.data
       },
     },
   }
