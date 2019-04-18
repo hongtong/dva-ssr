@@ -3,6 +3,7 @@ import reactApplication from './reactApplication'
 import status from './status'
 
 const middleware = [status]
-const csr = false
 
-export default csr ? middleware : [apiErrorHandle, reactApplication, ...middleware]
+export default [apiErrorHandle, reactApplication, ...middleware]
+
+export const csr = middleware
